@@ -54,7 +54,8 @@ const Detail = () => {
      }
 
      useEffect(() => {
-          api.get(`points/${routeParams}`)
+          console.log("ROUTE PARAMS: " + routeParams.point_id);
+          api.get(`points/${routeParams.point_id}`)
           .then(response => {
                setData(response.data)
           })
@@ -86,17 +87,17 @@ const Detail = () => {
                <View style={styles.footer}>
                     <RectButton
                          style={styles.button}
-                         onPress={() => {}}
+                         onPress={() => {handleWhatsapp}}
                     >
                          <FontAwesome name="whatsapp" size={20} color="#fff"/>
-                         <Text style={styles.button}>Whatsapp</Text>
+                         <Text style={styles.buttonText}>Whatsapp</Text>
                     </RectButton>
                     <RectButton
                          style={styles.button}
                          onPress={() => {handleComposeMail}}
                     >
                          <Icon name="mail" size={20} color="#fff"/>
-                         <Text style={styles.button}>E-mail</Text>
+                         <Text style={styles.buttonText}>E-mail</Text>
                     </RectButton>
                </View>
           </SafeAreaView>

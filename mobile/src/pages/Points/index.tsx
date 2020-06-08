@@ -57,6 +57,7 @@ const Points = () => {
           } else {
                console.log(`Items selecionados: ${selectedItems}`);
                setSelectedItems([...selectedItems, id]);
+               console.log(selectedItems);
           }
      }
 
@@ -66,6 +67,7 @@ const Points = () => {
                setItems(response.data)
                console.log(`Os items: ${response.data}`);
           })
+          console.log('Rodou' + items);
      }, [])
 
      // PEGA A LOCALIZAÇÃO DO USUÁRIO
@@ -88,7 +90,7 @@ const Points = () => {
           api.get("points", {
                params: {
                     city: "São Paulo",
-                    title: "SP",
+                    uf: "SP",
                     items: selectedItems
                }
           }).then(response => {
@@ -108,40 +110,42 @@ const Points = () => {
                     <View style={styles.mapContainer}>
                          {initialPosition[0] != 0 && (
                               <MapView 
-                              style={styles.map}
-                              initialRegion={{
-                                   latitude:initialPosition[0],
-                                   longitude:initialPosition[1],
-                                   latitudeDelta:0.014,
-                                   longitudeDelta:0.014,
-                              }}
-                         >
-                              {
-                                   points.map(point => {
-                                        return(
-                                             <Marker
-                                                  key={point.id}
-                                                  style={styles.mapMarker}
-                                                  coordinate={{
-                                                       latitude: point.latitude,
-                                                       longitude: point.longitude,
-                                                  }}
-                                                  onPress={() => handleNavigateToDetail(point.id)}
-                                             >
-                                                  <Image
-                                                       style={styles.mapMarkerImage} 
-                                                       source={{
-                                                            uri: point.image
+                                   style={styles.map}
+                                   initialRegion={{
+                                        latitude:initialPosition[0],
+                                        longitude:initialPosition[1],
+                                        latitudeDelta:0.014,
+                                        longitudeDelta:0.014,
+                                   }}
+                              >
+                                   {
+                                        points.map(point => {
+                                             return(
+                                                  <Marker
+                                                       key={point.id}
+                                                       style={styles.mapMarker}
+                                                       coordinate={{
+                                                            latitude: point.latitude,
+                                                            longitude: point.longitude,
                                                        }}
-                                                  />
-                                                  <Text style={styles.mapMarkerTitle}>
-                                                       {point.name}
-                                                  </Text>
-                                             </Marker>
-                                        )
-                                   })
-                              }
-                         </MapView>
+                                                       onPress={() => handleNavigateToDetail(point.id)}
+                                                  >
+                                                       <View style={styles.mapMarkerContainer}>
+                                                            <Image
+                                                                 style={styles.mapMarkerImage} 
+                                                                 source={{
+                                                                      uri: point.image
+                                                                 }}
+                                                            />
+                                                            <Text style={styles.mapMarkerTitle}>
+                                                                 {point.name}
+                                                            </Text>
+                                                       </View>
+                                                  </Marker>
+                                             )
+                                        })
+                                   }
+                              </MapView>
                          )}
                     </View>
                </View>
@@ -162,7 +166,7 @@ const Points = () => {
                                                   styles.item,
                                                   selectedItems.includes(item.id) ? styles.selectedItem : {}
                                              ]}
-                                             onPress={() => {handleSelectItem(item.id)}}
+                                             onPress={() => handleSelectItem(item.id)}
                                              activeOpacity={0.6}
                                         >
                                              <SvgUri width={42} height={42} uri={item.image_url}/>
